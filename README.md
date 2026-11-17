@@ -1,93 +1,176 @@
-# HireMe AI 🚀
-> **AI job platform & ATS-optimized resume tailor**
+<div align="center">
 
-HireMe AI is a full-stack career platform engineered specifically for **freshers and early-career software engineers (0–2 years experience)**. It combines an authentic multi-source job ingestion pipeline with a **truthful, minimal-edit ATS resume tailoring engine** that strictly forbids hallucinated metrics or fabricated technologies.
+# 🚀 HireMe AI
 
----
+**Production-grade, early-career job platform & truthful ATS-optimized resume tailoring engine.**
 
-## ✨ Key Features
+[![Frontend Deployed on Vercel](https://img.shields.io/badge/Frontend-Vercel-black?style=flat&logo=vercel)](https://frontendjob-pi.vercel.app)
+[![Backend Deployed on Render](https://img.shields.io/badge/Backend-Render-46E3B7?style=flat&logo=render)](https://hireme-zcaw.onrender.com)
+[![FastAPI](https://img.shields.io/badge/Backend-FastAPI-009688?style=flat&logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com)
+[![React](https://img.shields.io/badge/Frontend-React_18_%2B_Vite-61DAFB?style=flat&logo=react&logoColor=black)](https://vitejs.dev)
+[![Tailwind CSS](https://img.shields.io/badge/Styling-Tailwind_CSS-38B2AC?style=flat&logo=tailwind-css&logoColor=white)](https://tailwindcss.com)
+[![Groq LLM](https://img.shields.io/badge/LLM-Groq_%7C_gpt--oss--120b-F55036?style=flat)](https://groq.com)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
-### 1. 🎯 Curated Fresher Job Aggregator & Funnel
-- **Direct Company ATS Ingestion**: Scrapes real-time postings directly from Greenhouse, Lever, and Ashby boards for top tech companies, plus open aggregators (Remotive, Arbeitnow, Adzuna, Jobicy, Himalayas).
-- **3-Stage Fresher Quality Funnel**:
-  1. *Hard-Reject Filter*: Automatically drops senior, lead, principal, and 3+ years experience roles.
-  2. *LLM Classifier*: Evaluates role expectations, educational requirements, and entry-level accessibility.
-  3. *Composite Scoring*: Computes an authentic `fresher_score` prioritizing truly accessible junior roles.
-- **Direct Apply Links**: Every job post includes verified, direct application links.
+[Live App](https://frontendjob-pi.vercel.app) • [API Documentation](https://hireme-zcaw.onrender.com/docs) • [Architecture](#-system-architecture) • [Quickstart](#-quickstart-guide)
 
-### 2. 📄 Truthful "Minimal-Edit" ATS Resume Tailoring
-- **Facts Store Single Source of Truth**: The candidate's original CV is treated as an immutable ground-truth facts database.
-- **Allowed Edit Operations Only**:
-  - `SELECT / DROP`: Prioritize relevant bullets and prune filler.
-  - `REORDER`: Move highest-impact matching items to the top.
-  - `TRIM`: Cut wordy bullets down to their core impact.
-  - `VERB_SWAP`: Upgrade weak openers (*"worked on"*, *"helped in"*) to strong action verbs (*"Built"*, *"Engineered"*, *"Optimized"*).
-  - `TERM_ALIGN`: Align terminology strictly matching the JD (*"postgres"* ➔ *"PostgreSQL"*).
-  - `KEYWORD_ADD`: Add keywords only when substantiated by candidate facts or explicit technology implication maps.
-  - `MERGE`: Combine short, related bullet points.
-- **Zero-Fabrication Guarantee**: Never invents metrics, percentages, dates, tools, degrees, or roles.
-- **Jake's Resume LaTeX Template**: Clean, single-column, standard ATS-parsed formatting compiled via `tectonic` or `pdflatex` with 1-page line budget enforcement and PyMuPDF layout verification.
-
-### 3. 👤 Visual Candidate Facts Studio
-- Visual editor for Personal Info, Verified Technical Skills (badge chips), Work Experiences, Projects, and Education.
-- Direct JSON inspection toggle for power users.
-- Live database persistence so candidate facts are preserved and never lost across sessions.
-
-### 4. 🔒 Production Authentication & Data Persistence
-- **Email & Password Authentication**: Secure password hashing with `bcrypt` (12 rounds) and signed `JWT` access tokens with expiration.
-- **Guest-to-User Profile Claiming**: Resumes uploaded before logging in are automatically adopted and claimed upon registration or login.
-- **User Ownership**: Every profile, tailored resume PDF version, and job application tracking state is permanently saved to your relational account.
+</div>
 
 ---
 
-## 🏗️ Project Architecture
+## 📌 Overview
+
+**HireMe AI** solves the two biggest bottlenecks faced by freshers and early-career software engineers (0–2 years experience):
+1. **The Fresher Spam Problem**: Job boards flood junior applicants with "entry-level" postings secretly demanding 3–5+ years of experience or lead responsibilities.
+2. **The Resume Hallucination Problem**: Generic AI resume tools fabricate metrics, invent non-existent cloud architectures, and compromise candidate integrity.
+
+HireMe AI replaces this with a **deterministic 3-stage fresher qualification funnel** and a **truthful "minimal-edit" tailoring pipeline** that treats candidate CVs as an immutable ground-truth fact store.
+
+---
+
+## ✨ Core Platform Capabilities
+
+### 1. ⚡ 1-Click Instant Demo Mode (Zero Latency)
+* **Instant Client-Side Simulation**: Test all platform features (15 pre-scored jobs, full ATS analysis, side-by-side bullet diffs, LaTeX inspection, and PDF download) in **< 75ms** without creating an account or hitting backend rate limits.
+* **Realistic CSE Fixtures**: Pre-populated with an authentic DTU CSE candidate profile (*Arjun Sharma*, 20 skills, 2 internships, 3 system projects) and top-tier job postings from Anthropic, Scale AI, Stripe, Datadog, and Vercel.
+* **Intelligent Guest Interception**: Unauthenticated visitors dragging or clicking to upload a resume are presented with an instant choice between launching the interactive demo or creating a free account.
+
+### 2. 🎯 Multi-Source Fresher Job Funnel & Re-Ranking
+* **Direct ATS Board Connectors**: Ingests live job postings across **Greenhouse**, **Lever**, and **Ashby** boards, plus remote aggregators (*Remotive*, *Arbeitnow*, *Adzuna*, *Jobicy*, *Himalayas*).
+* **3-Stage Qualification Funnel**:
+  1. **Deterministic Rule Engine**: Hard-rejects any title containing `Senior`, `Lead`, `Staff`, `Principal`, `Manager`, `Director`, or requiring $\ge 3$ years of experience.
+  2. **LLM Curriculum Classifier**: Evaluates educational accessibility, foundational requirements, and mentoring support.
+  3. **Composite Scoring**: Ranks opportunities using a unified formula:
+     $$\text{Final Rank} = \text{Fresher Score} \times \text{Candidate Skill Overlap \%}$$
+* **Direct Apply Routing**: Every post delivers verified, direct links to official employer application forms.
+
+### 3. 📄 Truthful "Minimal-Edit" Resume Tailoring
+* **Immutable Fact Store**: The candidate's verified experiences, dates, degrees, companies, and project metrics are locked in an immutable fact store.
+* **Strict Edit Invariants**:
+  * ✅ **Permitted**: Active verb enhancement (*"worked on"* ➔ *"Architected"*), terminology normalization (*"postgres"* ➔ *"PostgreSQL"*), bullet reordering, concise trimming, and JD keyword alignment.
+  * ❌ **Forbidden**: Fabricating metrics, inventing percentage claims, introducing new tools, or modifying employment dates.
+* **Deterministic Post-Generation Verification**: If the LLM violates word retention thresholds ($< 60\%$) or hallucinates unsubstantiated claims, the system automatically falls back to original bullets.
+* **Jake's Resume LaTeX Engine**: Formatted on single-column, standard ATS-parsed typography, compiled via standalone `tectonic` / `pdflatex` with strict 1-page line budget constraints.
+
+### 4. 👤 Interactive Candidate Facts Studio
+* **Structured Fact Management**: Visual editing for personal information, verified skills, employment history, projects, certifications, and achievements.
+* **Dual-Mode Visual & JSON Editor**: Toggle between interactive visual cards and raw JSON for granular control.
+* **Session Persistence**: Resumes uploaded as a guest are automatically linked to your permanent account upon sign up or login.
+
+---
+
+## 🏛️ System Architecture
+
+```mermaid
+flowchart TD
+    subgraph Client ["Client Layer (React + Vite)"]
+        UI["Landing & Upload Page"]
+        Demo["Instant Demo Adapter (< 75ms)"]
+        Feed["Fresher Job Catalog"]
+        Tailor["Resume Diff & Preview Studio"]
+    end
+
+    subgraph Edge ["Edge & Routing"]
+        CORS["CORS Regex & Edge Headers"]
+        Auth["JWT Bearer Authentication"]
+    end
+
+    subgraph Backend ["FastAPI Core Services"]
+        Ingest["Job Ingestion Connectors\n(Greenhouse, Lever, Ashby, Remotive)"]
+        Funnel["3-Stage Fresher Funnel\n(Rules -> LLM -> Score)"]
+        Parser["Document Extraction\n(PyMuPDF + 150 DPI OCR)"]
+        FactsStore[("Candidate Facts Store")]
+        TailorEngine["Minimal-Edit Tailor Pipeline\n(Groq gpt-oss-120b)"]
+        LatexEngine["Tectonic / pdflatex\n(1-Page ATS Resume PDF)"]
+    end
+
+    subgraph Storage ["Persistence"]
+        DB[("PostgreSQL / SQLite")]
+    end
+
+    UI -->|Guest Check| Demo
+    UI -->|PDF / DOCX| Parser
+    Parser --> FactsStore
+    FactsStore --> DB
+    Ingest --> Funnel
+    Funnel --> DB
+    Feed -->|Read Feed| DB
+    Tailor -->|Tailor Request| TailorEngine
+    FactsStore --> TailorEngine
+    TailorEngine --> LatexEngine
+    LatexEngine -->|Download / Stream| Tailor
+```
+
+---
+
+## 🛠️ Technology Stack
+
+| Domain | Technologies |
+| :--- | :--- |
+| **Backend Framework** | [FastAPI](https://fastapi.tiangolo.com) 0.115+, Uvicorn (ASGI) |
+| **Database & ORM** | [PostgreSQL](https://www.postgresql.org) (Production) / [SQLite](https://sqlite.org) (Dev), [SQLAlchemy 2.0](https://www.sqlalchemy.org) Async, [Alembic](https://alembic.sqlalchemy.org) |
+| **AI / LLM Runtime** | [Groq SDK](https://groq.com) (`openai/gpt-oss-120b`, `llama-3.3-70b-versatile`) |
+| **Document Processing** | [PyMuPDF (fitz)](https://pymupdf.readthedocs.io), [EasyOCR](https://github.com/JaidedAI/EasyOCR) (150 DPI memory-optimized rasterization) |
+| **Document Compilation** | [Tectonic](https://tectonic-typesetting.github.io) (Static musl binary), `pdflatex`, Jinja2 LaTeX templates |
+| **Frontend Framework** | [React 18](https://react.dev), [Vite 5](https://vitejs.dev), React Router v6 |
+| **Styling & UI** | [Tailwind CSS](https://tailwindcss.com), [Lucide React Icons](https://lucide.dev) |
+| **Security & Auth** | [Passlib](https://passlib.readthedocs.io) (bcrypt 12 rounds), [PyJWT](https://pyjwt.readthedocs.io) (HS256) |
+
+---
+
+## 📂 Repository Structure
 
 ```
-naukri/
-├── ai_job_platform/           # FastAPI Backend Service
+.
+├── ai_job_platform/                # FastAPI Backend Service
 │   ├── app/
-│   │   ├── core/              # Config, DB connection, JWT security & bcrypt
-│   │   ├── models/            # SQLAlchemy async models (SQLite / PostgreSQL)
-│   │   ├── schemas/           # Pydantic validation schemas & DTOs
-│   │   ├── services/          # LLM pipeline, Tailor engine, ATS verifier, Ingestion
-│   │   └── routers/           # HTTP API routes (auth, jobs, resume, profiles, applications)
-│   ├── tests/                 # Full pytest suite (auth, pipeline, classifier, LLM)
-│   ├── requirements.txt       # Python dependencies
-│   └── .env.example           # Backend environment template
+│   │   ├── core/                   # Security, JWT tokens, config & DB sessions
+│   │   ├── models/                 # SQLAlchemy async entity models
+│   │   ├── schemas/                # Pydantic DTOs & response contracts
+│   │   ├── services/               # Job aggregator, classifier, OCR extractor & tailor engine
+│   │   ├── templates/              # Jake's Resume LaTeX template
+│   │   ├── utils/                  # Invariant verifier & PDF rasterizer
+│   │   └── routers/                # REST endpoints (auth, jobs, resume, profiles, applications)
+│   ├── tests/                      # Automated test suite (pytest)
+│   ├── Dockerfile                  # Production container definition (with Tectonic musl)
+│   └── requirements.txt            # Python dependencies
 │
-├── frontend_job/              # React + Vite Frontend Application
+├── frontend_job/                   # React + Vite Frontend Application
+│   ├── public/                     # Static assets & demo tailored resume PDF
 │   ├── src/
-│   │   ├── api/               # Axios client with JWT bearer interceptors
-│   │   ├── context/           # AppContext (global auth state, active profile)
-│   │   ├── components/        # Navbar, AuthModal (React Portal), UI components
-│   │   └── pages/             # Landing/Upload, Jobs, JobDetail, Applications, Profile Studio
-│   ├── package.json           # Frontend dependencies
-│   └── vite.config.js         # Vite configuration (port 3000)
+│   │   ├── api/                    # Axios client & zero-latency demo adapter
+│   │   ├── context/                # AppContext (auth, active profile, demo state)
+│   │   ├── components/             # Navbar, AuthModal, GuestUploadModal, JobCard, DemoBanner
+│   │   ├── data/                   # Realistic static demo fixtures (demoData.js)
+│   │   └── pages/                  # UploadPage, JobsPage, JobDetailPage, ProfilePage, ApplicationsPage
+│   ├── package.json                # Frontend dependencies
+│   └── vite.config.js              # Vite bundler configuration
 │
-└── .gitignore                 # Comprehensive secrets & build artifact filter
+└── README.md                       # Platform documentation
 ```
 
 ---
 
-## 🚀 Quickstart Guide
+## ⚡ Quickstart Guide
 
 ### Prerequisites
-- **Python**: 3.11+
-- **Node.js**: 18+ and npm
-- **Groq API Key**: (Free at [console.groq.com](https://console.groq.com))
-- *(Optional)* **Tectonic** or **pdflatex**: For local server-side PDF compilation. (If not installed, LaTeX source is always available to download and preview).
+* **Python**: 3.11 or newer
+* **Node.js**: 18+ and npm
+* **Groq API Key**: Obtain a free key from [console.groq.com](https://console.groq.com)
+* *(Optional)* **Tectonic / pdflatex**: Required only for local server-side PDF compilation. (If omitted, LaTeX source code is always previewable and exportable).
 
 ---
 
 ### 1. Backend Setup
 
 ```bash
-# Navigate to the backend directory
+# Navigate to backend directory
 cd ai_job_platform
 
-# Create and activate virtual environment
+# Create virtual environment
 python -m venv venv
 
+# Activate environment
 # On Windows (PowerShell):
 .\venv\Scripts\Activate.ps1
 # On macOS / Linux:
@@ -100,87 +183,114 @@ pip install -r requirements.txt
 cp .env.example .env
 ```
 
-Edit `.env` and fill in your keys:
+Edit your `.env` configuration:
 ```env
 APP_NAME="HireMe AI"
 APP_ENV=development
 DEBUG=true
 
-# Database (defaults to zero-config SQLite)
+# Database (Zero-config SQLite for local dev, PostgreSQL for production)
 DATABASE_URL=sqlite+aiosqlite:///./ai_job_platform.db
 
-# Groq LLM Key
+# Groq LLM API
 LLM_PROVIDER=groq
 GROQ_API_KEY=your_groq_api_key_here
 GROQ_MODEL=openai/gpt-oss-120b
 
-# JWT Authentication
-JWT_SECRET_KEY=your_random_secret_jwt_key_here
+# Security & Session Authentication
+JWT_SECRET_KEY=generate_a_secure_random_key_here
 JWT_ALGORITHM=HS256
 JWT_ACCESS_TOKEN_EXPIRE_DAYS=7
+
+# CORS (Allow local Vite dev server)
+CORS_ORIGINS=["http://localhost:3000","http://127.0.0.1:3000"]
 ```
 
-Start the FastAPI backend server:
+Start the FastAPI application:
 ```bash
 python -m uvicorn app.main:app --host 127.0.0.1 --port 8000 --reload
 ```
-Interactive API docs will be live at `http://127.0.0.1:8000/docs`.
+Interactive API documentation is now live at `http://127.0.0.1:8000/docs`.
 
 ---
 
 ### 2. Frontend Setup
 
-Open a separate terminal window:
+In a new terminal window:
 ```bash
-# Navigate to the frontend directory
+# Navigate to frontend directory
 cd frontend_job
 
 # Install dependencies
 npm install
 
-# Start Vite development server
+# Start Vite dev server
 npm run dev
 ```
-Open `http://localhost:3000` in your browser.
+
+Visit `http://localhost:3000` to launch the application.
 
 ---
 
-## 🧪 Running Tests
+## 🧪 Testing & Verification
 
-Run the backend unit and integration test suite:
+Run the automated test suite covering authentication, multi-stage job classification, LLM validation, and pipeline invariants:
 
 ```bash
 cd ai_job_platform
-python -m pytest tests/test_auth.py tests/test_llm.py tests/test_classifier.py -v
+pytest tests/ -v
+```
+
+To run a production frontend build:
+```bash
+cd frontend_job
+npm run build
 ```
 
 ---
 
-## 📡 Core API Endpoints
+## 📡 API Reference
 
 | Method | Endpoint | Description |
 | :--- | :--- | :--- |
-| `POST` | `/api/v1/auth/register` | Register new user with email and password |
-| `POST` | `/api/v1/auth/login` | Login and receive signed JWT access token |
-| `GET` | `/api/v1/auth/me` | Fetch active user session & latest profile ID |
-| `POST` | `/api/v1/resume/upload` | Upload & parse resume into ground-truth facts |
-| `POST` | `/api/v1/resume/tailor` | Minimal-edit ATS resume tailoring against target JD |
-| `GET` | `/api/v1/resume/my-versions` | List all tailored resume versions for user |
-| `GET` | `/api/v1/resume/download/{id}` | Download generated resume PDF |
-| `GET` | `/api/v1/profiles/me` | Retrieve authenticated user's current profile |
-| `PATCH` | `/api/v1/profiles/{id}` | Update candidate facts store (skills, experience, etc.) |
-| `POST` | `/api/v1/profiles/{id}/claim` | Claim guest-uploaded profile to authenticated user |
-| `GET` | `/api/v1/jobs` | Search & filter fresher-verified jobs |
-| `GET` | `/api/v1/applications/{profile_id}` | Retrieve tracked job applications & statuses |
+| `POST` | `/api/v1/auth/register` | Register new user account |
+| `POST` | `/api/v1/auth/login` | Authenticate credentials and receive JWT |
+| `GET` | `/api/v1/auth/me` | Fetch active user session and associated profile |
+| `POST` | `/api/v1/resume/upload` | Parse PDF/DOCX into immutable ground-truth facts |
+| `POST` | `/api/v1/resume/tailor` | Execute minimal-edit tailoring against target job description |
+| `POST` | `/api/v1/resume/{version_id}/recompile` | Toggle accept/revert on tailored bullets & recompile PDF |
+| `GET` | `/api/v1/resume/{version_id}/pdf` | Stream compiled tailored resume PDF |
+| `GET` | `/api/v1/resume/{version_id}/tex` | Download tailored LaTeX source document |
+| `GET` | `/api/v1/jobs/recommended` | Query 3-stage qualified fresher feed (ranked by fit) |
+| `POST` | `/api/v1/jobs/ingest` | Trigger multi-source ATS sync (Ashby, Lever, Greenhouse, etc.) |
+| `GET` | `/api/v1/jobs/{job_id}` | Retrieve individual job specifications & skill breakdown |
+| `GET` | `/api/v1/profiles/{profile_id}` | Fetch candidate facts store (skills, experience, projects) |
+| `PUT` | `/api/v1/profiles/{profile_id}` | Update candidate factual information |
+| `POST` | `/api/v1/profiles/{profile_id}/claim` | Bind guest-uploaded profile to authenticated account |
+| `POST` | `/api/v1/applications/apply` | Save and track application submission |
+| `GET` | `/api/v1/applications/{profile_id}` | List candidate application pipeline |
 
 ---
 
-## 🛡️ Security & Privacy
-- **Password Protection**: Passwords are never stored in plaintext; hashed with bcrypt (12 rounds).
-- **Protected Environment**: Sensitive `.env` keys, personal resume uploads, and database files are excluded from Git via `.gitignore`.
-- **Zero Fabrication**: LLM prompts explicitly forbid adding non-existent tools, false metrics, or hallucinated claims to candidate resumes.
+## 🌐 Production Deployment
+
+### Backend (Render / Cloud Containers)
+* Built using the production `Dockerfile` with multi-stage static musl Tectonic binary download.
+* Recommended Environment Configuration:
+  * `DATABASE_URL`: Managed PostgreSQL connection string (`postgresql+asyncpg://...`)
+  * `GROQ_API_KEY`: Production Groq key
+  * `CORS_ORIGINS`: `["https://frontendjob-pi.vercel.app"]`
+
+### Frontend (Vercel)
+* Framework Preset: **Vite**
+* Root Directory: `frontend_job`
+* Build Command: `npm run build`
+* Output Directory: `dist`
+* Environment Variables:
+  * `VITE_API_URL`: `https://hireme-zcaw.onrender.com/api/v1`
 
 ---
 
 ## 📄 License
-MIT License. Built for job seekers and early career software engineers.
+
+This project is licensed under the [MIT License](LICENSE). Built for early-career software engineers and job seekers worldwide.
