@@ -8,14 +8,12 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
 
 WORKDIR /app
 
-# Install system dependencies, essential TeX fonts, and Tectonic binary
+# Install system dependencies, font configuration, and modern TeX fonts
 RUN apt-get update && apt-get install -y --no-install-recommends \
     curl \
     ca-certificates \
+    fontconfig \
     libfontconfig1 \
-    libgraphite2-3 \
-    libharfbuzz0b \
-    libicu72 \
     fonts-lmodern \
     fonts-texgyre \
     && rm -rf /var/lib/apt/lists/*
@@ -30,11 +28,11 @@ COPY requirements.txt .
 RUN pip install --no-cache-dir --upgrade pip \
     && pip install --no-cache-dir -r requirements.txt
 
-# Copy source code and prompt assets
+# Copy source code and assets
 COPY . .
 
-# Create storage directory for resumes
-RUN mkdir -p storage/resumes
+# Create storage directories
+RUN mkdir -p uploads generated storage/resumes
 
 EXPOSE 8000
 
