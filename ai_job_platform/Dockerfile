@@ -8,7 +8,7 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
 
 WORKDIR /app
 
-# Install system dependencies, font configuration, and modern TeX fonts
+# Install system dependencies, font configuration, and compression utilities
 RUN apt-get update && apt-get install -y --no-install-recommends \
     curl \
     ca-certificates \
@@ -16,11 +16,15 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libfontconfig1 \
     fonts-lmodern \
     fonts-texgyre \
+    tar \
+    gzip \
     && rm -rf /var/lib/apt/lists/*
 
-# Install Tectonic (fast standalone modern TeX engine)
-RUN curl --proto '=https' --tlsv1.2 -fsSL https://drop-sh.tectonic-typesetting.net | sh \
+# Install Tectonic (official installer with direct GitHub static musl fallback)
+RUN (curl --proto '=https' --tlsv1.2 -fsSL https://drop-sh.fullyjustified.net | sh || \
+     (ARCH=$(uname -m) && curl -fsSL "https://github.com/tectonic-typesetting/tectonic/releases/download/tectonic%400.15.0/tectonic-0.15.0-${ARCH}-unknown-linux-musl.tar.gz" | tar -xz)) \
     && mv tectonic /usr/local/bin/tectonic \
+    && chmod +x /usr/local/bin/tectonic \
     && tectonic --version
 
 # Copy requirements and install Python dependencies
