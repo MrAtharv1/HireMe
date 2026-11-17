@@ -8,24 +8,25 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
 
 WORKDIR /app
 
-# Install system dependencies, font configuration, and compression utilities
+# Install system dependencies, essential fonts, and network tools
 RUN apt-get update && apt-get install -y --no-install-recommends \
     curl \
     ca-certificates \
     fontconfig \
-    libfontconfig1 \
     fonts-lmodern \
     fonts-texgyre \
     tar \
     gzip \
     && rm -rf /var/lib/apt/lists/*
 
-# Install Tectonic (official installer with direct GitHub static musl fallback)
-RUN (curl --proto '=https' --tlsv1.2 -fsSL https://drop-sh.fullyjustified.net | sh || \
-     (ARCH=$(uname -m) && curl -fsSL "https://github.com/tectonic-typesetting/tectonic/releases/download/tectonic%400.15.0/tectonic-0.15.0-${ARCH}-unknown-linux-musl.tar.gz" | tar -xz)) \
-    && mv tectonic /usr/local/bin/tectonic \
+# Install Tectonic: Download official standalone statically-linked musl binary
+# (Fully static with ZERO dynamic library dependencies, works seamlessly on x86_64 and aarch64)
+RUN ARCH=$(uname -m) \
+    && curl -fsSL "https://github.com/tectonic-typesetting/tectonic/releases/download/tectonic%400.15.0/tectonic-0.15.0-${ARCH}-unknown-linux-musl.tar.gz" -o tectonic.tar.gz \
+    && tar -xzf tectonic.tar.gz -C /usr/local/bin \
+    && rm tectonic.tar.gz \
     && chmod +x /usr/local/bin/tectonic \
-    && tectonic --version
+    && /usr/local/bin/tectonic --version
 
 # Copy requirements and install Python dependencies
 COPY requirements.txt .
