@@ -1,24 +1,35 @@
 import React, { useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
-import { X, Mail, Lock, User, AlertCircle, Loader2, Sparkles, CheckCircle2 } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import { X, Mail, Lock, User, AlertCircle, Loader2, Sparkles, CheckCircle2, ArrowRight } from 'lucide-react';
 import { useApp } from '../context/AppContext';
 
 const AuthModal = () => {
   const {
     isAuthModalOpen,
     setIsAuthModalOpen,
+    authModalMode,
     login,
     register,
     authError,
     setAuthError,
     isAuthLoading,
+    enterDemoMode,
   } = useApp();
 
+  const navigate = useNavigate();
   const [mode, setMode] = useState('login'); // 'login' | 'register'
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [fullName, setFullName] = useState('');
   const [successMsg, setSuccessMsg] = useState(null);
+
+  // Sync mode with context state whenever modal opens
+  useEffect(() => {
+    if (isAuthModalOpen && authModalMode) {
+      setMode(authModalMode);
+    }
+  }, [isAuthModalOpen, authModalMode]);
 
   // Close on Escape key press
   useEffect(() => {
@@ -72,6 +83,12 @@ const AuthModal = () => {
     setAuthError(null);
   };
 
+  const handleLaunchInstantDemo = () => {
+    enterDemoMode();
+    handleClose();
+    navigate('/jobs');
+  };
+
   const modalContent = (
     <div
       className="fixed inset-0 z-[99999] flex items-center justify-center p-4 bg-slate-950/85 backdrop-blur-md transition-opacity duration-200"
@@ -96,7 +113,7 @@ const AuthModal = () => {
         </button>
 
         {/* Header */}
-        <div className="text-center mb-6">
+        <div className="text-center mb-5">
           <div className="inline-flex items-center justify-center w-12 h-12 bg-brand-accent/10 border border-brand-accent/30 rounded-2xl text-brand-accent mb-3">
             <Sparkles size={24} />
           </div>
@@ -108,6 +125,33 @@ const AuthModal = () => {
               ? 'Sign in to access your tailored resumes, saved facts, and job application history.'
               : 'Join HireMe AI to get curated jobs and minimal-edit ATS resume tailoring.'}
           </p>
+        </div>
+
+        {/* Prominent High-Contrast Instant Demo Callout */}
+        <div className="mb-5 p-3 rounded-xl bg-gradient-to-r from-amber-500/15 via-yellow-500/10 to-amber-500/15 border border-amber-500/40 shadow-inner">
+          <button
+            type="button"
+            onClick={handleLaunchInstantDemo}
+            className="w-full py-2.5 px-3.5 bg-gradient-to-r from-amber-400 to-yellow-400 hover:from-amber-300 hover:to-yellow-300 text-slate-950 font-extrabold rounded-xl text-xs flex items-center justify-center gap-2 shadow-md shadow-amber-500/20 transition-all cursor-pointer transform hover:-translate-y-0.5 active:translate-y-0"
+          >
+            <Sparkles size={14} className="shrink-0 text-slate-950" />
+            <span>Launch Instant Demo (No Signup)</span>
+            <ArrowRight size={14} className="shrink-0 text-slate-950 ml-auto" />
+          </button>
+          <p className="text-[10px] text-amber-200/80 text-center mt-1.5 font-medium">
+            ⚡ Instant client-side access • 15 pre-scored jobs • Live ATS tailoring
+          </p>
+        </div>
+
+        <div className="relative my-4">
+          <div className="absolute inset-0 flex items-center">
+            <div className="w-full border-t border-slate-800" />
+          </div>
+          <div className="relative flex justify-center text-[10px] uppercase tracking-wider">
+            <span className="bg-slate-900 px-2.5 text-slate-500 font-bold">
+              {mode === 'login' ? 'Or Sign In with Email' : 'Or Create New Account'}
+            </span>
+          </div>
         </div>
 
         {/* Success banner */}
@@ -127,7 +171,7 @@ const AuthModal = () => {
         )}
 
         {/* Traditional Email & Password Form */}
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form onSubmit={handleSubmit} className="space-y-3.5">
           {mode === 'register' && (
             <div>
               <label className="block text-xs font-semibold text-slate-400 mb-1.5">
@@ -194,7 +238,7 @@ const AuthModal = () => {
           <button
             type="submit"
             disabled={isAuthLoading}
-            className="w-full mt-3 bg-brand-accent hover:bg-brand-accent/90 text-slate-950 py-2.5 rounded-xl text-xs font-bold transition-all shadow-md shadow-brand-accent/10 disabled:opacity-50 flex items-center justify-center gap-2 cursor-pointer"
+            className="w-full mt-2 bg-brand-accent hover:bg-brand-accent/90 text-slate-950 py-2.5 rounded-xl text-xs font-bold transition-all shadow-md shadow-brand-accent/10 disabled:opacity-50 flex items-center justify-center gap-2 cursor-pointer"
           >
             {isAuthLoading && <Loader2 size={14} className="animate-spin" />}
             {mode === 'login' ? 'Sign In' : 'Create Account'}
@@ -202,7 +246,7 @@ const AuthModal = () => {
         </form>
 
         {/* Toggle between Login and Register */}
-        <div className="mt-5 text-center text-xs text-slate-400 border-t border-slate-800/80 pt-4">
+        <div className="mt-4 text-center text-xs text-slate-400 border-t border-slate-800/80 pt-3">
           {mode === 'login' ? (
             <>
               Don't have an account?{' '}

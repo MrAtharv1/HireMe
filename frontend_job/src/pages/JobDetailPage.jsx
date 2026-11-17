@@ -256,13 +256,30 @@ const JobDetailPage = () => {
   };
 
   const handleDownloadPDF = () => {
-    if (versionId) {
+    if (pdfBlobUrl) {
+      const a = document.createElement('a');
+      a.href = pdfBlobUrl;
+      a.download = `tailored_resume_${job?.company?.replace(/\s+/g, '_') || 'tailored'}.pdf`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+    } else if (versionId) {
       window.open(`${API_BASE_URL}/resume/${versionId}/pdf`, '_blank');
     }
   };
 
   const handleDownloadTex = () => {
-    if (versionId) {
+    if (texSource) {
+      const blob = new Blob([texSource], { type: 'text/plain;charset=utf-8' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `tailored_resume_${job?.company?.replace(/\s+/g, '_') || 'tailored'}.tex`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      setTimeout(() => URL.revokeObjectURL(url), 1000);
+    } else if (versionId) {
       window.open(`${API_BASE_URL}/resume/${versionId}/tex`, '_blank');
     }
   };

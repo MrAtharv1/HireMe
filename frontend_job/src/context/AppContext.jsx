@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import api from '../api/client';
+import { DEMO_PROFILE_ID, DEMO_USER, DEMO_USER_ID } from '../data/demoData';
 
 const AppContext = createContext();
 
@@ -18,7 +19,16 @@ export const AppProvider = ({ children }) => {
     return localStorage.getItem('hireme_profile_id') || null;
   });
 
+  const [isDemoMode, setIsDemoMode] = useState(() => {
+    try {
+      return localStorage.getItem('hireme_demo_mode') === 'true';
+    } catch {
+      return false;
+    }
+  });
+
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
+  const [authModalMode, setAuthModalMode] = useState('login'); // 'login' | 'register'
   const [authError, setAuthError] = useState(null);
   const [isAuthLoading, setIsAuthLoading] = useState(false);
 
@@ -32,8 +42,47 @@ export const AppProvider = ({ children }) => {
     }
   };
 
+  // Open the auth modal in a specific mode ('login' or 'register')
+  const openAuthModal = (mode = 'login') => {
+    setAuthModalMode(mode);
+    setAuthError(null);
+    setIsAuthModalOpen(true);
+  };
+
+  // Enter instant client-side demo mode
+  const enterDemoMode = () => {
+    setIsDemoMode(true);
+    localStorage.setItem('hireme_demo_mode', 'true');
+    setProfileId(DEMO_PROFILE_ID);
+    setUser(DEMO_USER);
+    localStorage.setItem('hireme_user', JSON.stringify(DEMO_USER));
+    setIsAuthModalOpen(false);
+    setAuthError(null);
+  };
+
+  // Exit instant demo mode
+  const exitDemoMode = () => {
+    setIsDemoMode(false);
+    localStorage.removeItem('hireme_demo_mode');
+    if (profileId === DEMO_PROFILE_ID) {
+      setProfileId(null);
+    }
+    if (user?.id === DEMO_USER_ID || user?.email === DEMO_USER.email) {
+      setUser(null);
+      localStorage.removeItem('hireme_user');
+      localStorage.removeItem('hireme_token');
+    }
+  };
+
   // On mount or when token changes, refresh user info and their active profile
   useEffect(() => {
+    if (isDemoMode) {
+      // In demo mode, preserve demo profile and mock user without remote network trip
+      if (!profileId) setProfileId(DEMO_PROFILE_ID);
+      if (!user) setUser(DEMO_USER);
+      return;
+    }
+
     if (!token) return;
 
     const fetchMe = async () => {
@@ -56,10 +105,14 @@ export const AppProvider = ({ children }) => {
     };
 
     fetchMe();
-  }, [token]);
+  }, [token, isDemoMode]);
 
   const handleAuthSuccess = async (data) => {
     const { access_token, user: userData } = data;
+    // Clear demo mode upon real account authentication
+    setIsDemoMode(false);
+    localStorage.removeItem('hireme_demo_mode');
+
     setToken(access_token);
     setUser(userData);
     localStorage.setItem('hireme_token', access_token);
@@ -67,8 +120,8 @@ export const AppProvider = ({ children }) => {
 
     if (userData.active_profile_id) {
       setProfileId(userData.active_profile_id);
-    } else if (profileId) {
-      // If user had uploaded a resume as a guest before signing in/registering, link it to this account!
+    } else if (profileId && profileId !== DEMO_PROFILE_ID) {
+      // Link guest profile to authenticated account
       try {
         await api.post(`/profiles/${profileId}/claim`);
       } catch (err) {
@@ -133,6 +186,7 @@ export const AppProvider = ({ children }) => {
   };
 
   const logout = () => {
+    exitDemoMode();
     setToken(null);
     setUser(null);
     localStorage.removeItem('hireme_token');
@@ -147,12 +201,18 @@ export const AppProvider = ({ children }) => {
         isAuthenticated: !!user,
         profileId,
         setProfileId,
+        isDemoMode,
+        enterDemoMode,
+        exitDemoMode,
         login,
         register,
         googleLogin,
         logout,
         isAuthModalOpen,
         setIsAuthModalOpen,
+        authModalMode,
+        setAuthModalMode,
+        openAuthModal,
         authError,
         setAuthError,
         isAuthLoading,

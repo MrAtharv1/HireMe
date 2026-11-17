@@ -1015,9 +1015,14 @@ const UploadPage = () => {
   const [isUploading, setIsUploading] = useState(false);
   const [error, setError] = useState(null);
   
-  const { setProfileId, user, isAuthenticated, setIsAuthModalOpen, logout } = useApp();
+  const { setProfileId, user, isAuthenticated, setIsAuthModalOpen, logout, enterDemoMode } = useApp();
   const navigate = useNavigate();
   const fileInputRef = useRef(null);
+
+  const handleLaunchDemo = () => {
+    enterDemoMode();
+    navigate('/jobs');
+  };
 
   const handleDragOver = (e) => {
     e.preventDefault();
@@ -1148,6 +1153,13 @@ const UploadPage = () => {
                 Sign In
               </button>
             )}
+            <button
+              type="button"
+              onClick={handleLaunchDemo}
+              className="hidden sm:inline-flex items-center gap-1.5 bg-[#5c1a1a] text-[#f5f0d8] border-2 border-[#5c1a1a] rounded-full py-[0.55rem] px-4 font-['DM_Sans',sans-serif] text-xs font-bold hover:bg-[#431212] hover:-translate-y-[1px] transition-all shadow-sm cursor-pointer"
+            >
+              <span>⚡ Try Instant Demo</span>
+            </button>
             <button className="bg-[#d4be6a] border-2 border-[#5c1a1a] rounded-full py-[0.6rem] px-[1.8rem] font-['DM_Sans',sans-serif] text-[0.95rem] font-medium text-[#2a1a1a] cursor-pointer hover:bg-[#c8b05e] hover:-translate-y-[1px] transition-all" onClick={() => scrollToSection('upload')}>
               Start Exploring
             </button>
@@ -1254,6 +1266,25 @@ const UploadPage = () => {
               <p className="relative z-10 font-['DM_Sans',sans-serif] text-[clamp(1rem,1.8vw,1.45rem)] font-medium text-[#6b2020] mt-4 max-w-[640px] leading-[1.6] animate-fadeUp-2 text-center mx-auto px-4">
                 Shit that works — AI parses your resume, matches real jobs, and tailors your profile to beat the ATS.
               </p>
+
+              {/* Instant Demo Hero Action Buttons */}
+              <div className="relative z-20 mt-6 flex flex-wrap items-center justify-center gap-3 animate-fadeUp-3">
+                <button
+                  type="button"
+                  onClick={handleLaunchDemo}
+                  className="bg-[#5c1a1a] text-white border-2 border-[#5c1a1a] rounded-full py-3 px-6 font-['DM_Sans',sans-serif] text-sm font-bold shadow-lg hover:bg-[#431212] hover:-translate-y-0.5 transition-all flex items-center gap-2 cursor-pointer"
+                >
+                  <span>⚡ Launch Instant Demo (No Signup)</span>
+                  <span className="text-[#d4be6a] text-base">→</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => scrollToSection('upload')}
+                  className="bg-white/80 backdrop-blur-sm text-[#5c1a1a] border-2 border-[#5c1a1a]/30 rounded-full py-3 px-6 font-['DM_Sans',sans-serif] text-sm font-semibold hover:border-[#5c1a1a] hover:bg-white transition-all cursor-pointer"
+                >
+                  Upload Your PDF
+                </button>
+              </div>
             </div>
 
             {/* Downward Illustration Image (Pushed to bottom, just above marquee) */}
@@ -1400,6 +1431,17 @@ const UploadPage = () => {
                   'Parse Resume & Find Jobs ✨'
                 )}
               </button>
+
+              {/* Instant Demo Alternative */}
+              <div className="mt-4 pt-3 border-t border-[#5c1a1a]/15 text-center">
+                <button
+                  type="button"
+                  onClick={handleLaunchDemo}
+                  className="text-xs font-bold text-[#5c1a1a] hover:text-[#2a1a1a] underline decoration-[#5c1a1a]/40 hover:decoration-[#5c1a1a] transition-colors cursor-pointer"
+                >
+                  ⚡ Don't have a resume handy? Try Instant Demo (1-Click) →
+                </button>
+              </div>
             </div>
           </div>
         </section>
