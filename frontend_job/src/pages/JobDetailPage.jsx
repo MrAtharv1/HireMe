@@ -7,7 +7,7 @@ import {
   CheckCircle2, Info
 } from 'lucide-react';
 import { useApp } from '../context/AppContext';
-import api from '../api/client';
+import api, { API_BASE_URL } from '../api/client';
 
 const JobDetailPage = () => {
   const { id } = useParams();
@@ -257,13 +257,13 @@ const JobDetailPage = () => {
 
   const handleDownloadPDF = () => {
     if (versionId) {
-      window.open(`http://localhost:8000/api/v1/resume/${versionId}/pdf`, '_blank');
+      window.open(`${API_BASE_URL}/resume/${versionId}/pdf`, '_blank');
     }
   };
 
   const handleDownloadTex = () => {
     if (versionId) {
-      window.open(`http://localhost:8000/api/v1/resume/${versionId}/tex`, '_blank');
+      window.open(`${API_BASE_URL}/resume/${versionId}/tex`, '_blank');
     }
   };
 
