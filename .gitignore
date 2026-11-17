@@ -1,0 +1,59 @@
+# Environments and Keys
+.env
+.env.*
+!.env.example
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+.venv/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Databases & local state
+*.db
+*.sqlite
+*.sqlite3
+ai_job_platform/*.db
+
+# Resumes, uploads & generated PDFs
+ai_job_platform/uploads/*
+!ai_job_platform/uploads/.gitkeep
+ai_job_platform/generated/*
+!ai_job_platform/generated/.gitkeep
+
+# Node / Frontend
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+frontend_job/node_modules/
+frontend_job/dist/
+frontend_job/.vite/
+
+# OS / Editor artifacts
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

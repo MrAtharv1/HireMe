@@ -1,0 +1,105 @@
+# Versioned implication map for truthful keyword enrichment
+# A keyword can ONLY be added if it is directly implied by an evidence tool already present in the item.
+version: "1.0"
+implications:
+  fastapi:
+    - "Python"
+    - "REST APIs"
+    - "RESTful APIs"
+    - "Backend"
+    - "APIs"
+  react:
+    - "JavaScript"
+    - "Frontend"
+    - "UI"
+    - "Web Development"
+  django:
+    - "Python"
+    - "Backend"
+    - "Web Development"
+    - "REST APIs"
+  flask:
+    - "Python"
+    - "Backend"
+    - "REST APIs"
+  express:
+    - "Node.js"
+    - "JavaScript"
+    - "Backend"
+    - "REST APIs"
+  nodejs:
+    - "JavaScript"
+    - "Backend"
+  "node.js":
+    - "JavaScript"
+    - "Backend"
+  pytest:
+    - "Unit Testing"
+    - "Testing"
+    - "Python"
+  postgresql:
+    - "SQL"
+    - "Relational Databases"
+    - "Databases"
+  mysql:
+    - "SQL"
+    - "Relational Databases"
+    - "Databases"
+  sqlite:
+    - "SQL"
+    - "Relational Databases"
+    - "Databases"
+  mongodb:
+    - "NoSQL"
+    - "Databases"
+  redis:
+    - "Caching"
+    - "In-Memory Databases"
+    - "Databases"
+  docker:
+    - "Containerization"
+    - "DevOps"
+    - "Containers"
+  kubernetes:
+    - "Container Orchestration"
+    - "DevOps"
+    - "Containers"
+  git:
+    - "Version Control"
+  github:
+    - "Version Control"
+    - "Git"
+  aws:
+    - "Cloud Computing"
+    - "Cloud"
+  gcp:
+    - "Cloud Computing"
+    - "Cloud"
+  azure:
+    - "Cloud Computing"
+    - "Cloud"
+  pandas:
+    - "Python"
+    - "Data Analysis"
+    - "Data Processing"
+  numpy:
+    - "Python"
+    - "Data Analysis"
+  pytorch:
+    - "Python"
+    - "Machine Learning"
+    - "Deep Learning"
+  tensorflow:
+    - "Python"
+    - "Machine Learning"
+    - "Deep Learning"
+  "scikit-learn":
+    - "Python"
+    - "Machine Learning"
+  selenium:
+    - "Automation"
+    - "Testing"
+    - "QA"
+  postman:
+    - "API Testing"
+    - "REST APIs"

@@ -1,0 +1,153 @@
+\documentclass[letterpaper,10pt]{article}
+
+\pdfgentounicode=1
+\input{glyphtounicode}
+
+\usepackage{latexsym}
+\usepackage[empty]{fullpage}
+\usepackage{titlesec}
+\usepackage{marvosym}
+\usepackage[usenames,dvipsnames]{color}
+\usepackage{verbatim}
+\usepackage{enumitem}
+\usepackage[hidelinks]{hyperref}
+\usepackage{fancyhdr}
+\usepackage[english]{babel}
+\usepackage{tabularx}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyfoot{}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
+
+% Adjust margins (0.5 to 0.6 in)
+\addtolength{\oddsidemargin}{-0.5in}
+\addtolength{\evensidemargin}{-0.5in}
+\addtolength{\textwidth}{1in}
+\addtolength{\topmargin}{-.5in}
+\addtolength{\textheight}{1.0in}
+
+\urlstyle{same}
+
+\raggedbottom
+\raggedright
+\setlength{\tabcolsep}{0in}
+
+% Sections formatting
+\titleformat{\section}{
+  \vspace{-4pt}\scshape\raggedright\large
+}{}{0em}{}[\color{black}\titlerule \vspace{-5pt}]
+
+% Custom commands
+\newcommand{\resumeItem}[1]{
+  \item\small{
+    {#1 \vspace{-2pt}}
+  }
+}
+
+\newcommand{\resumeSubheading}[4]{
+  \vspace{-2pt}\item
+    \begin{tabular*}{0.97\textwidth}[t]{l@{\extracolsep{\fill}}r}
+      \textbf{#1} & #2 \\
+      \textit{\small#3} & \textit{\small #4} \\
+    \end{tabular*}\vspace{-7pt}
+}
+
+\newcommand{\resumeProjectHeading}[2]{
+    \item
+    \begin{tabular*}{0.97\textwidth}{l@{\extracolsep{\fill}}r}
+      \small#1 & #2 \\
+    \end{tabular*}\vspace{-7pt}
+}
+
+\newcommand{\resumeSubHeadingListStart}{\begin{itemize}[leftmargin=0.15in, label={}]}
+\newcommand{\resumeSubHeadingListEnd}{\end{itemize}}
+\newcommand{\resumeItemListStart}{\begin{itemize}}
+\newcommand{\resumeItemListEnd}{\end{itemize}\vspace{-5pt}}
+
+\begin{document}
+
+%----------HEADING----------
+\begin{center}
+    \textbf{\Huge \scshape Software Engineer} \\ \vspace{2pt}
+    \small 
+    +91 7048947427 $|$     \href{mailto:mratharv1@gmail.com}{\underline{mratharv1@gmail.com}} $|$             \end{center}
+
+
+%-----------EDUCATION-----------
+\section{Education}
+  \resumeSubHeadingListStart
+          \resumeSubheading
+        {JSS Academy Of Technical Education, Noida, U.P.}{}
+        {B.Tech}{}
+          \resumeSubheading
+        {Delhi Public School, Indirapuram, U.P.}{}
+        {Grade XII (PCM)}{}
+          \resumeSubheading
+        {Delhi Public School, Indirapuram, U.P.}{}
+        {Grade X}{}
+      \resumeSubHeadingListEnd
+
+%-----------TECHNICAL SKILLS-----------
+\section{Technical Skills}
+ \begin{itemize}[leftmargin=0.15in, label={}]
+    \small{\item{
+                        \textbf{Languages}: JavaScript, Python \\
+                                \textbf{Frameworks & Libraries}: FastAPI, React \\
+                                \textbf{Databases}: MongoDB, MySql \\
+                                \textbf{Tools & Cloud}: Artificial Intelligence, C/C++, Communication, Critical \& analytical reasoning, Data Structures and Algorithms, Express JS, HTML-CSS / JavaScript, LangGraph, Langchain, Meta Llama, Object-Oriented Programming, Project Management, Qdrant, Self Driven, catboost, numpy/panda \\
+                                }}
+ \end{itemize}
+
+%-----------EXPERIENCE-----------
+\section{Experience}
+  \resumeSubHeadingListStart
+          \resumeSubheading
+        {Software Developer Intern}{None - None}
+        {Geotrics Analytics Pvt. Ltd.}{Noida}
+        \resumeItemListStart
+                      \resumeItem{Worked on complete frontend architectural rebuild of a geospatial analytics dashboard utilizing React 19, Vite, and Tailwind CSS for a highly performant, premium user interface.}
+                      \resumeItem{Optimized global state management across dozens of custom hooks to seamlessly handle live data for over 10k active construction sites.}
+                      \resumeItem{Engineered a high-performance geospatial state layer utilizing Redux Toolkit, optimizing data processing by transforming flat arrays into a dictionary-based hash map for O(1) site lookups.}
+                  \resumeItemListEnd
+          \resumeSubheading
+        {ML Engineer Intern}{None - None}
+        {Vistec Partners India Private Limited}{Noida}
+        \resumeItemListStart
+                      \resumeItem{Developed a two-stage predictive machine learning pipeline using Python and CatBoost to forecast healthcare claim denials and classify specific rejection reasons.}
+                      \resumeItem{Built a scalable claim analysis engine utilizing Pandas and NumPy to process, clean, and standardize large healthcare datasets for predictive modeling.}
+                      \resumeItem{Achieved a 0.8258 AUC score and 74.69\% accuracy on the binary denial prediction model.}
+                  \resumeItemListEnd
+      \resumeSubHeadingListEnd
+
+%-----------PROJECTS-----------
+\section{Projects}
+    \resumeSubHeadingListStart
+              \resumeProjectHeading
+          {\textbf{MoneyLogix – AI-Powered Options Strategy Builder} $|$ \emph{React, FastAPI, Meta Llama, JavaScript}}{}
+          \resumeItemListStart
+                          \resumeItem{Developed a Black–Scholes–based analytics engine with portfolio Greeks and a normalized 0–100 risk model using 5 portfolio factors.}
+                          \resumeItem{Implemented a 35-scenario stress-testing engine for multi-leg option portfolios across spot-price and implied-volatility changes.}
+                      \resumeItemListEnd
+              \resumeProjectHeading
+          {\textbf{LUNAR-ISP} $|$ \emph{Python}}{}
+          \resumeItemListStart
+                          \resumeItem{Integrated radar, optical, and terrain datasets into a geospatial pipeline for explainable lunar ice site prioritization.}
+                      \resumeItemListEnd
+          \resumeSubHeadingListEnd
+
+%-----------CERTIFICATIONS & ACHIEVEMENTS-----------
+\section{Certifications \& Achievements}
+  \begin{itemize}[leftmargin=0.15in, label={}]
+    \small{\item{
+                    $\bullet$ SSB Recommended (AFSB Mysuru) \\
+              $\bullet$ Used critical thinking to break down problems, evaluate solutions and develop strong organizational skills through group projects. \\
+              $\bullet$ Demonstrated creativity and resourcefulness through the development of innovative solutions (DSA Problems). \\
+              $\bullet$ Core Member, JSS Technical Society \\
+              $\bullet$ Participated in Hackathons and Coding contests \\
+              $\bullet$ Scholar Badge winner for 9 consecutive years (3rd-12th Grade, DPS-Indirapuram) \\
+          }}
+  \end{itemize}
+
+\end{document}

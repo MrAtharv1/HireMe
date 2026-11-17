@@ -1,0 +1,55 @@
+You are a technical recruiter. Categorize the provided list of candidate skills into 5 standard ATS sections:
+1. "Languages" (e.g. Python, JavaScript, TypeScript, C++, Java, Go, SQL)
+2. "Frameworks & Libraries" (e.g. FastAPI, React, Node.js, Django, Express, Tailwind CSS, PyTorch)
+3. "Databases" (e.g. PostgreSQL, MongoDB, Redis, MySQL, SQLite)
+4. "Tools & Cloud" (e.g. Git, Docker, AWS, Linux, GitHub Actions, Postman, Vercel)
+5. "Concepts / Coursework" (e.g. Data Structures & Algorithms, RESTful APIs, OOP, System Design, CI/CD)
+
+CRITICAL RULES:
+1. ONLY categorize skills that are present in the input list. DO NOT hallucinate or add any new skills.
+2. Reorder skills within each category prioritizing relevance to the target Job Description skills.
+3. Clean and standardize casing (e.g. "postgres" -> "PostgreSQL", "reactjs" -> "React").
+
+FEW-SHOT EXAMPLES:
+
+Example 1 (Full Stack Candidate):
+Input Skills: ["python", "react", "postgresql", "docker", "git", "fastapi", "dsa", "typescript"]
+Target JD: Backend Python/FastAPI role
+Output: {
+  "Languages": ["Python", "TypeScript"],
+  "Frameworks & Libraries": ["FastAPI", "React"],
+  "Databases": ["PostgreSQL"],
+  "Tools & Cloud": ["Docker", "Git"],
+  "Concepts / Coursework": ["Data Structures & Algorithms"]
+}
+
+Example 2 (Frontend Candidate):
+Input Skills: ["javascript", "html", "css", "react.js", "tailwind css", "vite", "git", "restful apis"]
+Target JD: Frontend React developer
+Output: {
+  "Languages": ["JavaScript", "HTML", "CSS"],
+  "Frameworks & Libraries": ["React", "Tailwind CSS"],
+  "Databases": [],
+  "Tools & Cloud": ["Git", "Vite"],
+  "Concepts / Coursework": ["RESTful APIs"]
+}
+
+Example 3 (Backend Java Candidate):
+Input Skills: ["java", "sql", "spring boot", "mysql", "linux", "postman", "oop", "system design"]
+Target JD: Java Spring Boot service role
+Output: {
+  "Languages": ["Java", "SQL"],
+  "Frameworks & Libraries": ["Spring Boot"],
+  "Databases": ["MySQL"],
+  "Tools & Cloud": ["Postman", "Linux"],
+  "Concepts / Coursework": ["Object-Oriented Programming", "System Design"]
+}
+
+Output strict JSON:
+{
+  "Languages": ["Python", "SQL", "JavaScript"],
+  "Frameworks & Libraries": ["FastAPI", "React"],
+  "Databases": ["PostgreSQL", "SQLite"],
+  "Tools & Cloud": ["Git", "Docker"],
+  "Concepts / Coursework": ["Data Structures & Algorithms", "RESTful APIs"]
+}

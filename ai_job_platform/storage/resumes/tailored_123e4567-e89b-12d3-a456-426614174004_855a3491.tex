@@ -1,0 +1,131 @@
+\documentclass[letterpaper,10pt]{article}
+
+\pdfgentounicode=1
+\input{glyphtounicode}
+
+\usepackage{latexsym}
+\usepackage[empty]{fullpage}
+\usepackage{titlesec}
+\usepackage{marvosym}
+\usepackage[usenames,dvipsnames]{color}
+\usepackage{verbatim}
+\usepackage{enumitem}
+\usepackage[hidelinks]{hyperref}
+\usepackage{fancyhdr}
+\usepackage[english]{babel}
+\usepackage{tabularx}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyfoot{}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
+
+% Adjust margins (0.5 to 0.6 in)
+\addtolength{\oddsidemargin}{-0.5in}
+\addtolength{\evensidemargin}{-0.5in}
+\addtolength{\textwidth}{1in}
+\addtolength{\topmargin}{-.5in}
+\addtolength{\textheight}{1.0in}
+
+\urlstyle{same}
+
+\raggedbottom
+\raggedright
+\setlength{\tabcolsep}{0in}
+
+% Sections formatting
+\titleformat{\section}{
+  \vspace{-4pt}\scshape\raggedright\large
+}{}{0em}{}[\color{black}\titlerule \vspace{-5pt}]
+
+% Custom commands
+\newcommand{\resumeItem}[1]{
+  \item\small{
+    {#1 \vspace{-2pt}}
+  }
+}
+
+\newcommand{\resumeSubheading}[4]{
+  \vspace{-2pt}\item
+    \begin{tabular*}{0.97\textwidth}[t]{l@{\extracolsep{\fill}}r}
+      \textbf{#1} & #2 \\
+      \textit{\small#3} & \textit{\small #4} \\
+    \end{tabular*}\vspace{-7pt}
+}
+
+\newcommand{\resumeProjectHeading}[2]{
+    \item
+    \begin{tabular*}{0.97\textwidth}{l@{\extracolsep{\fill}}r}
+      \small#1 & #2 \\
+    \end{tabular*}\vspace{-7pt}
+}
+
+\newcommand{\resumeSubHeadingListStart}{\begin{itemize}[leftmargin=0.15in, label={}]}
+\newcommand{\resumeSubHeadingListEnd}{\end{itemize}}
+\newcommand{\resumeItemListStart}{\begin{itemize}}
+\newcommand{\resumeItemListEnd}{\end{itemize}\vspace{-5pt}}
+
+\begin{document}
+
+%----------HEADING----------
+\begin{center}
+    \textbf{\Huge \scshape Aditi Rao} \\ \vspace{2pt}
+    \small 
+    +91 9988776655 $|$     \href{mailto:aditi@example.com}{\underline{aditi@example.com}} $|$     \href{https://linkedin.com/in/aditirao}{\underline{LinkedIn}} $|$     \href{https://github.com/aditirao}{\underline{GitHub}} $|$     \end{center}
+
+%-----------SUMMARY-----------
+\section{Professional Summary}
+\small{Aspiring Freelance Copywriter with background in B.E. Computer Science, skilled in Docker, FastAPI, Git, PostgreSQL. Experienced in building reliable software applications with focus on clean architecture and automated testing.}
+\vspace{2pt}
+
+%-----------EDUCATION-----------
+\section{Education}
+  \resumeSubHeadingListStart
+          \resumeSubheading
+        {RV College of Engineering}{2020 - 2024}
+        {B.E. Computer Science}{Bengaluru}
+      \resumeSubHeadingListEnd
+
+%-----------TECHNICAL SKILLS-----------
+\section{Technical Skills}
+ \begin{itemize}[leftmargin=0.15in, label={}]
+    \small{\item{
+                        \textbf{Languages}: Python \\
+                                \textbf{Frameworks & Libraries}: FastAPI \\
+                                \textbf{Databases}: PostgreSQL \\
+                                \textbf{Tools & Cloud}: Docker, Git, pytest \\
+                                }}
+ \end{itemize}
+
+%-----------EXPERIENCE-----------
+\section{Experience}
+  \resumeSubHeadingListStart
+          \resumeSubheading
+        {Backend Intern}{Jan 2024 - Jun 2024}
+        {CloudScale Systems}{Bengaluru}
+        \resumeItemListStart
+                      \resumeItem{Worked on developing 8 REST API endpoints in python using FastAPI.}
+                      \resumeItem{Helped in writing unit tests using pytest for authentication service.}
+                  \resumeItemListEnd
+      \resumeSubHeadingListEnd
+
+%-----------PROJECTS-----------
+\section{Projects}
+    \resumeSubHeadingListStart
+              \resumeProjectHeading
+          {\textbf{API Gateway Microservice} $|$ \emph{FastAPI, PostgreSQL, Docker}}{2024}
+          \resumeItemListStart
+                          \resumeItem{Engineered async routing service using FastAPI, PostgreSQL, and Python.}
+                      \resumeItemListEnd
+          \resumeSubHeadingListEnd
+
+%-----------CERTIFICATIONS & ACHIEVEMENTS-----------
+\section{Certifications \& Achievements}
+  \begin{itemize}[leftmargin=0.15in, label={}]
+    \small{\item{
+              $\bullet$ AWS Certified Cloud Practitioner \\
+                }}
+  \end{itemize}
+
+\end{document}

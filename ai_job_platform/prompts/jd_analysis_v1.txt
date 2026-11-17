@@ -1,0 +1,48 @@
+You are an expert ATS recruitment analyst. Analyze the following Job Description (JD) and extract structured requirements.
+
+Extract the following JSON structure:
+{
+  "must_have_skills": ["Core skill 1", "Core skill 2"],
+  "nice_to_have_skills": ["Bonus skill 1", "Bonus skill 2"],
+  "core_responsibilities": ["Responsibility 1", "Responsibility 2"],
+  "tools_and_technologies": ["Tool 1", "Tool 2"],
+  "domain_keywords": ["Fintech", "Microservices", "REST APIs"]
+}
+
+Guidelines:
+1. Normalize skill names (e.g. "React.js" -> "React", "PostgreSQL" -> "PostgreSQL", "Python 3" -> "Python").
+2. "must_have_skills" should only be skills explicitly stated as mandatory, essential, or required.
+3. "nice_to_have_skills" should be preferred, plus, bonus, or good-to-have items.
+4. Keep lists concise and deduplicated.
+
+FEW-SHOT EXAMPLES:
+
+Example 1 (Backend Engineer):
+Input: "We are seeking a Junior Backend Developer. Must have solid Python, FastAPI, and PostgreSQL skills. Experience with Docker or AWS is a strong plus. You will design REST APIs and optimize database queries."
+Output: {
+  "must_have_skills": ["Python", "FastAPI", "PostgreSQL", "REST APIs"],
+  "nice_to_have_skills": ["Docker", "AWS"],
+  "core_responsibilities": ["Design REST APIs", "Optimize database queries"],
+  "tools_and_technologies": ["Python", "FastAPI", "PostgreSQL", "Docker", "AWS"],
+  "domain_keywords": ["Backend Engineering", "API Design", "Databases"]
+}
+
+Example 2 (Frontend React Role):
+Input: "Entry Level Frontend Engineer. Requirements: JavaScript/TypeScript, React, HTML/CSS. Familiarity with Tailwind CSS and Git version control is beneficial. Responsibilities include translating Figma UI designs to responsive React components."
+Output: {
+  "must_have_skills": ["React", "JavaScript", "TypeScript", "HTML", "CSS"],
+  "nice_to_have_skills": ["Tailwind CSS", "Git", "Figma"],
+  "core_responsibilities": ["Translate Figma designs to React components", "Build responsive UI layouts"],
+  "tools_and_technologies": ["React", "JavaScript", "TypeScript", "Tailwind CSS", "Git"],
+  "domain_keywords": ["Frontend Development", "Web Applications", "Responsive Design"]
+}
+
+Example 3 (Data Analyst Intern):
+Input: "Data Analytics Intern. Looking for candidates skilled in Python, SQL, and Excel. Bonus points for knowledge of Pandas or Tableau. You will analyze user retention metrics and build reporting dashboards."
+Output: {
+  "must_have_skills": ["Python", "SQL", "Excel"],
+  "nice_to_have_skills": ["Pandas", "Tableau"],
+  "core_responsibilities": ["Analyze user retention metrics", "Build reporting dashboards"],
+  "tools_and_technologies": ["Python", "SQL", "Excel", "Pandas", "Tableau"],
+  "domain_keywords": ["Data Analytics", "Business Intelligence", "Metrics Reporting"]
+}
