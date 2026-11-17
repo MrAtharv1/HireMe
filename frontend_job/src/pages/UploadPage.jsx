@@ -372,7 +372,7 @@
 // //               <h2 className="font-['Anton',sans-serif] text-[clamp(2.8rem,5vw,5rem)] text-[#5c1a1a] leading-[0.95] uppercase mb-6">Drop your<br />resume<br />here</h2>
 // //               <p className="text-[1.1rem] font-normal text-[#6b2020] leading-[1.5] max-w-[380px] mb-10">Our AI will parse your skills, find matching jobs, and tailor your profile to beat the ATS.</p>
 
-// //               <button className="inline-flex items-center gap-3 bg-[#5c1a1a] border-2 border-[#5c1a1a] rounded-full py-[0.85rem] px-8 font-['DM_Sans',sans-serif] text-base font-semibold text-white cursor-pointer hover:bg-[#4a1414] hover:-translate-y-[2px] transition-all w-fit" id="leftUploadBtn" onClick={() => fileInputRef.current?.click()}>
+// //               <button className="inline-flex items-center gap-3 bg-[#5c1a1a] border-2 border-[#5c1a1a] rounded-full py-[0.85rem] px-8 font-['DM_Sans',sans-serif] text-base font-semibold text-white cursor-pointer hover:bg-[#4a1414] hover:-translate-y-[2px] transition-all w-fit" id="leftUploadBtn" onClick={handleInitiateUpload}>
 // //                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="shrink-0">
 // //                   <polyline points="16 16 12 12 8 16" /><line x1="12" y1="12" x2="12" y2="21" />
 // //                   <path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3" />
@@ -792,7 +792,7 @@
 //               <h2 className="font-['Anton',sans-serif] text-[clamp(2.8rem,5vw,5rem)] text-[#5c1a1a] leading-[0.95] uppercase mb-6">Drop your<br />resume<br />here</h2>
 //               <p className="text-[1.1rem] font-normal text-[#6b2020] leading-[1.5] max-w-[380px] mb-10">Our AI will parse your skills, find matching jobs, and tailor your profile to beat the ATS.</p>
 
-//               <button className="inline-flex items-center gap-3 bg-[#5c1a1a] border-2 border-[#5c1a1a] rounded-full py-[0.85rem] px-8 font-['DM_Sans',sans-serif] text-base font-semibold text-white cursor-pointer hover:bg-[#4a1414] hover:-translate-y-[2px] transition-all w-fit" id="leftUploadBtn" onClick={() => fileInputRef.current?.click()}>
+//               <button className="inline-flex items-center gap-3 bg-[#5c1a1a] border-2 border-[#5c1a1a] rounded-full py-[0.85rem] px-8 font-['DM_Sans',sans-serif] text-base font-semibold text-white cursor-pointer hover:bg-[#4a1414] hover:-translate-y-[2px] transition-all w-fit" id="leftUploadBtn" onClick={handleInitiateUpload}>
 //                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="shrink-0">
 //                   <polyline points="16 16 12 12 8 16" /><line x1="12" y1="12" x2="12" y2="21" />
 //                   <path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3" />
@@ -1007,6 +1007,7 @@ import { useNavigate } from 'react-router-dom';
 import { useApp } from '../context/AppContext';
 import api from '../api/client';
 import fempicc from '../assets/fempicc.png';
+import GuestUploadModal from '../components/GuestUploadModal';
 
 const UploadPage = () => {
   // --- UPLOAD STATE & LOGIC ---
@@ -1019,9 +1020,21 @@ const UploadPage = () => {
   const navigate = useNavigate();
   const fileInputRef = useRef(null);
 
+  // Guest Upload Interception State
+  const [isGuestModalOpen, setIsGuestModalOpen] = useState(false);
+  const [pendingFile, setPendingFile] = useState(null);
+
   const handleLaunchDemo = () => {
     enterDemoMode();
     navigate('/jobs');
+  };
+
+  const handleInitiateUpload = () => {
+    if (!isAuthenticated) {
+      setIsGuestModalOpen(true);
+      return;
+    }
+    fileInputRef.current?.click();
   };
 
   const handleDragOver = (e) => {
@@ -1038,7 +1051,22 @@ const UploadPage = () => {
     e.preventDefault();
     setIsDragging(false);
     const droppedFile = e.dataTransfer.files[0];
-    if (droppedFile) validateAndSetFile(droppedFile);
+    if (!droppedFile) return;
+
+    if (!isAuthenticated) {
+      setPendingFile(droppedFile);
+      setIsGuestModalOpen(true);
+      return;
+    }
+
+    validateAndSetFile(droppedFile);
+  };
+
+  const handleAuthenticatedWithFile = (authedFile) => {
+    if (authedFile) {
+      validateAndSetFile(authedFile);
+      setPendingFile(null);
+    }
   };
 
   const handleFileChange = (e) => {
@@ -1062,6 +1090,12 @@ const UploadPage = () => {
 
   const handleUpload = async () => {
     if (!file || isUploading) return;
+
+    if (!isAuthenticated) {
+      setPendingFile(file);
+      setIsGuestModalOpen(true);
+      return;
+    }
     
     setIsUploading(true);
     setError(null);
@@ -1335,7 +1369,7 @@ const UploadPage = () => {
               <h2 className="font-['Anton',sans-serif] text-[clamp(2.8rem,5vw,5rem)] text-[#5c1a1a] leading-[0.95] uppercase mb-6">Drop your<br />resume<br />here</h2>
               <p className="text-[1.1rem] font-normal text-[#6b2020] leading-[1.5] max-w-[380px] mb-10">Our AI will parse your skills, find matching jobs, and tailor your profile to beat the ATS.</p>
 
-              <button className="inline-flex items-center gap-3 bg-[#5c1a1a] border-2 border-[#5c1a1a] rounded-full py-[0.85rem] px-8 font-['DM_Sans',sans-serif] text-base font-semibold text-white cursor-pointer hover:bg-[#4a1414] hover:-translate-y-[2px] transition-all w-fit" id="leftUploadBtn" onClick={() => fileInputRef.current?.click()}>
+              <button className="inline-flex items-center gap-3 bg-[#5c1a1a] border-2 border-[#5c1a1a] rounded-full py-[0.85rem] px-8 font-['DM_Sans',sans-serif] text-base font-semibold text-white cursor-pointer hover:bg-[#4a1414] hover:-translate-y-[2px] transition-all w-fit" id="leftUploadBtn" onClick={handleInitiateUpload}>
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="shrink-0">
                   <polyline points="16 16 12 12 8 16" /><line x1="12" y1="12" x2="12" y2="21" />
                   <path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3" />
@@ -1373,7 +1407,7 @@ const UploadPage = () => {
                 onDragOver={handleDragOver}
                 onDragLeave={handleDragLeave}
                 onDrop={handleDrop}
-                onClick={() => fileInputRef.current?.click()}
+                onClick={handleInitiateUpload}
               >
                 <div className={`w-16 h-16 rounded-full flex items-center justify-center mb-4 transition-colors ${file ? 'bg-[#5c1a1a]/15' : 'bg-[#5c1a1a]/10'}`} id="dropIcon">
                   {file ? (
@@ -1552,6 +1586,14 @@ const UploadPage = () => {
           </ul>
           <span className="text-[0.8rem] text-white/50">© 2026 HireMe AI. All rights reserved.</span>
         </footer>
+
+        {/* Guest Upload Interception Modal */}
+        <GuestUploadModal
+          isOpen={isGuestModalOpen}
+          onClose={() => setIsGuestModalOpen(false)}
+          pendingFile={pendingFile}
+          onAuthenticatedWithFile={handleAuthenticatedWithFile}
+        />
       </div>
     </>
   );
