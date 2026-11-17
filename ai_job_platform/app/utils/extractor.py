@@ -96,14 +96,15 @@ def _extract_pdf(file_bytes: bytes) -> Tuple[str, str]:
 
 
 def _ocr_pdf(file_bytes: bytes) -> Tuple[str, str]:
-    """Render each PDF page as an image, then run EasyOCR."""
+    """Render each PDF page as an image, then run EasyOCR (memory-safe)."""
     reader = _get_ocr_reader()
     doc = fitz.open(stream=file_bytes, filetype="pdf")
     all_text: list[str] = []
 
-    for page_idx in range(len(doc)):
+    # Limit to first 3 pages to prevent memory spikes on free cloud hosts
+    for page_idx in range(min(len(doc), 3)):
         page = doc[page_idx]
-        pix = page.get_pixmap(dpi=300)
+        pix = page.get_pixmap(dpi=150)  # 150 DPI is optimal for OCR while using 75% less RAM than 300 DPI
         img_bytes = pix.tobytes("png")
         img = Image.open(io.BytesIO(img_bytes))
         img_np = np.array(img)
