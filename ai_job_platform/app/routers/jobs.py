@@ -53,7 +53,7 @@ class RecommendedJobCard(BaseModel):
 @router.get("/recommended", response_model=List[RecommendedJobCard], summary="Get filtered fresher job recommendations")
 async def get_recommended_jobs(
     profile_id: Optional[uuid.UUID] = Query(None, description="Candidate Profile UUID"),
-    min_fresher_score: int = Query(60, description="Minimum fresher score threshold (0-100)"),
+    min_fresher_score: int = Query(40, description="Minimum fresher score threshold (0-100)"),
     min_match: int = Query(0, description="Minimum match percentage"),
     role: Optional[str] = Query(None, description="Filter by title / role keyword"),
     location: Optional[str] = Query(None, description="Filter by location"),
@@ -83,6 +83,17 @@ async def get_recommended_jobs(
     
     result = await db.execute(query)
     jobs = result.scalars().all()
+
+    # Auto-ingest if table is completely empty on fresh deployment
+    if not jobs:
+        try:
+            logger.info("No active jobs in database. Auto-ingesting from multi-source pipeline...")
+            from app.services.job_aggregator import run_job_ingestion_pipeline
+            await run_job_ingestion_pipeline(db, limit_per_source=20)
+            result = await db.execute(query)
+            jobs = result.scalars().all()
+        except Exception as ingest_err:
+            logger.warning("Auto-ingestion fallback failed: %s", ingest_err)
 
     now = datetime.now(timezone.utc)
     cards: List[RecommendedJobCard] = []
@@ -143,10 +154,16 @@ async def get_recommended_jobs(
     return cards[:limit]
 
 
-@router.post("/ingest", summary="Fetch jobs from Remotive API")
+@router.post("/ingest", summary="Fetch jobs across all verified sources")
 async def ingest_jobs(limit: int = 50, db: AsyncSession = Depends(get_db)):
-    """Pulls remote jobs into the database across multiple categories."""
-    return await fetch_and_store_jobs(db, limit)
+    """Pulls jobs from all available ATS and aggregators (Greenhouse, Lever, Ashby, Remotive, etc.)."""
+    try:
+        from app.services.job_aggregator import run_job_ingestion_pipeline
+        result = await run_job_ingestion_pipeline(db, limit_per_source=min(limit, 30))
+        return {"success": True, "message": "Multi-source ingestion complete.", "data": result}
+    except Exception as e:
+        logger.warning("Multi-source pipeline error, using fallback: %s", e)
+        return await fetch_and_store_jobs(db, limit)
 
 
 @router.get(

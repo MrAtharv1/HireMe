@@ -11,6 +11,7 @@ const JobsPage = () => {
 
   const [jobs, setJobs] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [isSyncing, setIsSyncing] = useState(false);
   const [error, setError] = useState(null);
 
   // Filters State
@@ -21,6 +22,18 @@ const JobsPage = () => {
   const [minMatch, setMinMatch] = useState(0);
   const [maxDaysOld, setMaxDaysOld] = useState(30);
   const [sortBy, setSortBy] = useState('best_match'); // best_match, newest, highest_match
+
+  const handleSyncJobs = async () => {
+    setIsSyncing(true);
+    try {
+      await api.post('/jobs/ingest?limit=30');
+      await fetchJobs();
+    } catch (e) {
+      console.error('Job sync failed:', e);
+    } finally {
+      setIsSyncing(false);
+    }
+  };
 
   const fetchJobs = async () => {
     if (!profileId) {
@@ -33,7 +46,7 @@ const JobsPage = () => {
       // Primary: calls the 3-stage funnel recommended endpoint
       const params = new URLSearchParams({
         profile_id: profileId,
-        min_fresher_score: '60',
+        min_fresher_score: '40',
         limit: '100',
       });
       if (maxDaysOld) params.append('max_days_old', maxDaysOld.toString());
@@ -272,19 +285,29 @@ const JobsPage = () => {
           <p className="text-slate-400 text-sm max-w-md mx-auto mt-1 mb-4">
             Try lowering the minimum match threshold, expanding your location, or clearing search keywords.
           </p>
-          <button
-            onClick={() => {
-              setRoleQuery('');
-              setLocationQuery('');
-              setRemoteOnly(false);
-              setJobType('all');
-              setMinMatch(0);
-              setMaxDaysOld(30);
-            }}
-            className="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-lg text-sm font-medium transition-colors"
-          >
-            Reset Filters
-          </button>
+          <div className="flex flex-wrap items-center justify-center gap-3">
+            <button
+              onClick={() => {
+                setRoleQuery('');
+                setLocationQuery('');
+                setRemoteOnly(false);
+                setJobType('all');
+                setMinMatch(0);
+                setMaxDaysOld(30);
+              }}
+              className="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-lg text-sm font-medium transition-colors cursor-pointer"
+            >
+              Reset Filters
+            </button>
+            <button
+              onClick={handleSyncJobs}
+              disabled={isSyncing}
+              className="px-4 py-2 bg-brand-accent hover:bg-brand-accent/90 text-slate-950 font-bold rounded-lg text-sm transition-colors flex items-center gap-2 cursor-pointer disabled:opacity-50"
+            >
+              {isSyncing ? <Loader2 size={15} className="animate-spin" /> : <RefreshCw size={15} />}
+              Fetch Latest Fresher Jobs
+            </button>
+          </div>
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
